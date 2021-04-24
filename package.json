@@ -1,0 +1,20 @@
+{
+    "name": "JbKosinCs",
+    "version": "1.0.0",
+    "description": "",
+    "main": "",
+    "scripts":
+    {
+        "start": "concurrently --kill-others-on-fail \"npm run start-server\" \"npm run start-client\"",
+        "start-client": "cd Client && npm start",
+        "start-server": "cd Server && nodemon Server.js"
+    },
+    "keywords": [],
+    "author": "",
+    "license": "ISC",
+    "dependencies":
+    {
+        "concurrently": "^6.0.2",
+        "nodemon": "^2.0.7"
+    }
+}
