@@ -1,11 +1,18 @@
 const Express = require("express");
 const BodyParser = require("body-parser");
+const Cors = require("cors");
 const MySql = require("mysql");
+const Multer = require("multer");
+const FileSystem = require("fs");
+const { promisify } = require("util");
+const Pipeline = promisify(require("stream").pipeline);
 const Common = require("./Common");
-const Event = require("./Event");
-const Participant = require("./Participant");
+const Event = require("./Controllers/Event");
+const Participant = require("./Controllers/Participant");
+const { pipeline } = require("stream");
 
 const SERVER_PORT = 5000;
+const FILE_STORAGE_PATH = `${__dirname}/../Database/Images`;
 const DATABASE_HOST = "localhost";
 const DATABASE_PORT = 3306;
 const DATABASE_NAME = "JbKosinCs";
@@ -14,14 +21,23 @@ const DATABASE_PASSWORD = "qazxsw18926A!@";
 
 const app = Express();
 app.use(BodyParser.json());
+app.use(Cors());
 
 const connection = MySql.createConnection({ host: DATABASE_HOST, port: DATABASE_PORT, database: DATABASE_NAME, user: DATABASE_USER, password: DATABASE_PASSWORD, dateStrings: true });
 connection.connect();
+
+const multer = Multer();
 
 function Error(err, res)
 {
     console.error(`${Common.GetCurrentTime()} ERROR: ${err.message}\n`);
     res.status(500).json({ message: err.message });
+}
+
+function BadRequest(err, res)
+{
+    console.error(`${Common.GetCurrentTime()} Bad Request: ${err.message}\n`);
+    res.status(400).json({ message: err.message });
 }
 
 function NotFound(res)
@@ -36,7 +52,13 @@ function OK(res, result)
 
 function Created(res, result)
 {
-    console.log(`${Common.GetCurrentTime()} Created: ${result.id}\n`);
+    console.log(`${Common.GetCurrentTime()} Created: ${result.insertId}\n`);
+    res.status(201).json(result);
+}
+
+function Uploaded(res, result)
+{
+    console.log(`${Common.GetCurrentTime()} Uploaded: ${result.fileName}\n`);
     res.status(201).json(result);
 }
 
@@ -76,7 +98,7 @@ function Create(res, err, rows)
 {
     if (err)
     {
-        Error(err, res);
+        BadRequest(err, res);
     }
     else
     {
@@ -88,7 +110,7 @@ function Update(res, err, rows)
 {
     if (err)
     {
-        Error(err, res);
+        BadRequest(err, res);
     }
     else
     {
@@ -99,6 +121,8 @@ function Update(res, err, rows)
 app.get("/get/events", (req, res) => Event.GetAllEvents(connection, res, ReadManyOrNull));
 app.get("/get/events/eventId/:eventId", (req, res) => Event.GetEventByEventId(connection, req.params, res, ReadOneOrNull));
 app.get("/get/events/name/:name", (req, res) => Event.GetEventsByName(connection, req.params, res, ReadManyOrNull));
+app.get("/get/events/available", (req, res) => Event.GetAvailableEvents(connection, res, ReadManyOrNull));
+app.get("/get/events/ended", (req, res) => Event.GetEndedEvents(connection, res, ReadManyOrNull));
 
 app.get("/get/participants", (req, res) => Participant.GetAllParticipants(connection, res, ReadManyOrNull));
 app.get("/get/participants/participantId/:participantId", (req, res) => Participant.GetParticipantByParticipantId(connection, req.params, res, ReadOneOrNull));
@@ -107,7 +131,24 @@ app.get("/get/participants/church/:church", (req, res) => Participant.GetPartici
 
 app.post("/add/events", (req, res) => Event.AddEvent(connection, req.body, res, Create));
 
-app.post("/add/participants", (req, res) => Participant.AddParticipant(connection, req.body, res, Create));
+app.post("/add/participants", multer.single("image"), async (req, res) =>
+{
+    if (!("file" in req) || req.file === undefined || req.file === null)
+    {
+        BadRequest({message: "이미지가 없습니다."}, res);
+    }
+    else if (!("file" in req) || !req.file.detectedMimeType || !req.file.detectedFileExtension || (!req.file.detectedMimeType.includes("image")) || (!(req.file.clientReportedMimeType.includes("image"))))
+    {
+        BadRequest({ message: "올바르지 않은 이미지 타입입니다." }, res);
+    }
+    else
+    {
+        const fileName = `${Common.GetCurrentTime().split("T")[0]}-${Math.floor(Math.random() * 100000000000000)}${req.file.detectedFileExtension}`;
+        await Pipeline(req.file.stream, FileSystem.createWriteStream(`${FILE_STORAGE_PATH}/${fileName}`)).catch(err => { Error({message: "파일을 업로드 할 수 없었습니다. " + err.message}, res); return; });
+        req.body["submissionImage"] = fileName;
+        Participant.AddParticipant(connection, req.body, res, Create);
+    }  
+});
 
 app.put("/score/participants/participantId/:participantId", (req, res) => Participant.ScoreParticipant(connection, req.params, req.body, res, Update));
 

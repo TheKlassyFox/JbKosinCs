@@ -1,4 +1,4 @@
-const Common = require("./Common");
+const Common = require("../Common");
 
 const TABLE_NAME = "Participants";
 

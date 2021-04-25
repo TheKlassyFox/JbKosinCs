@@ -1,10 +1,20 @@
-const Common = require("./Common");
+const Common = require("../Common");
 
 const TABLE_NAME = "Events";
 
 function GetAllEvents(connection, res, callback)
 {
     connection.query(`SELECT * FROM ${TABLE_NAME};`, (err, rows) => callback(res, err, rows));
+}
+
+function GetAvailableEvents(connection, res, callback)
+{
+    connection.query(`SELECT * FROM ${TABLE_NAME} WHERE dateStart <= \"${Common.GetCurrentTime()}\" AND dateEnd > \"${Common.GetCurrentTime()}\";`, (err, rows) => callback(res, err, rows));
+}
+
+function GetEndedEvents(connection, res, callback)
+{
+    connection.query(`SELECT * FROM ${TABLE_NAME} WHERE dateEnd <= \"${Common.GetCurrentTime()}\";`, (err, rows) => callback(res, err, rows));
 }
 
 function GetEventByEventId(connection, params, res, callback)
@@ -43,7 +53,7 @@ function AddEvent(connection, body, res, callback)
     {
         Common.ThrowError("대회 종료 날짜의 양식이 잘못되었습니다.", res, callback);
     }
-    else if (new Date(body.DateStart) > new Date(body.dateEnd))
+    else if (new Date(body.dateStart) > new Date(body.dateEnd))
     {
         Common.ThrowError("대회 시작 날짜는 대회 종료 날짜보다 클 수 없습니다.", res, callback);
     }
@@ -58,5 +68,7 @@ module.exports =
     GetAllEvents: GetAllEvents,
     GetEventByEventId: GetEventByEventId,
     GetEventsByName: GetEventsByName,
-    AddEvent: AddEvent
+    AddEvent: AddEvent,
+    GetAvailableEvents: GetAvailableEvents,
+    GetEndedEvents: GetEndedEvents
 }
