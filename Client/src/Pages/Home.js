@@ -9,7 +9,7 @@ class Home extends React.Component
         return (
 
             <section className="home">
-                <h1>2021<br />제 40회<br />어린이 대회</h1>
+                <h1><span style={{fontSize: "2.3em", fontFamily: "inherit"}}>2021</span><br />제 40회<br />어린이 대회</h1>
                 <div className="button">
                     <Link to="/Register">대회 접수하기</Link>
                 </div>
