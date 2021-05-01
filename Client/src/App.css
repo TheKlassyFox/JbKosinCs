@@ -242,12 +242,12 @@ footer > p
 {
     font-family: 'GongGothicMedium';
     position: absolute;
-    top: 17.5%;
-    left: 15%;
+    top: 35%;
+    left: 22.5%;
     text-align: left;
-    font-size: 2.75rem;
-    text-shadow: 3px 6px black;
-    color: #FFFFF5;
+    font-size: 2.5rem;
+    text-shadow: 1px 1px yellow;
+    color: rgb(19, 19, 132);
 }
 
 section 
@@ -283,8 +283,8 @@ section > h1
 {
     background-color: #C21E56;
     position: absolute;
-    bottom: 12.5%;
-    right: 14.5%;
+    bottom: 5%;
+    right: 26.5%;
     padding-top: 10px;
     padding-bottom: 15px;
     padding-right: 30px;

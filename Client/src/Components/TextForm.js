@@ -52,7 +52,7 @@ class TextForm extends React.Component
 
             await Axios.post("/add/participants", f).then(res => 
             {
-                alert(`이름: ${this.state.name}\n교회: ${this.state.church}\n등록되었습니다.`);
+                alert(`이름: ${this.state.name}\n교회: ${this.state.church}\n제출되었습니다.`);
                 this.setState({ eventId: "선택", name: "", church: "", submissionImage: "", image: "" });
                 this.setState({onSubmitting: false});
             }
@@ -68,7 +68,7 @@ class TextForm extends React.Component
 
             <form onSubmit={this.state.onSubmitting ? null : this.handleSubmit} className="registerForm">
                 <label>
-                    <span>대회:</span>
+                    <span>종목:</span>
                     <select value={this.state.eventId} onChange={(e) => this.setState({eventId: e.target.value})}>
                         { this.state.eventsAvailable ? this.state.eventsAvailable.map((e, i) => <option key={i} value={e.eventId}>{e.name}</option>) : "" }
                     </select>

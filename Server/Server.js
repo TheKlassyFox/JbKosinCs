@@ -143,8 +143,18 @@ app.post("/add/participants", multer.single("image"), async (req, res) =>
     }
     else
     {
-        const fileName = `${Common.GetCurrentTime().split("T")[0]}-${Math.floor(Math.random() * 100000000000000)}${req.file.detectedFileExtension}`;
-        await Pipeline(req.file.stream, FileSystem.createWriteStream(`${FILE_STORAGE_PATH}/${fileName}`)).catch(err => { Error({message: "파일을 업로드 할 수 없었습니다. " + err.message}, res); return; });
+        connection.query(`SELECT Name FROM Events WHERE eventId = ${req.body.eventId}`, (err, rows) => console.log(rows));
+
+        const folderName = `./Images/${req.body.eventId ? req.body.eventId.toString() : "unknown"}`;
+
+        const fileName = `${req.body.name}-${req.body.church}-${Math.floor(Math.random() * 10000000)}${req.file.detectedFileExtension}`;
+
+        if (!FileSystem.existsSync(folderName))
+        {
+            FileSystem.mkdirSync(folderName, {recursive: true});
+        }
+
+        await Pipeline(req.file.stream, FileSystem.createWriteStream(`${folderName}/${fileName}`)).catch(err => { Error({message: "파일을 업로드 할 수 없었습니다. " + err.message}, res); return; });
         req.body["submissionImage"] = fileName;
         Participant.AddParticipant(connection, req.body, res, Create);
     }  
