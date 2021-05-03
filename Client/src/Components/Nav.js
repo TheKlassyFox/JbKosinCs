@@ -34,8 +34,8 @@ class Nav extends React.Component
 <div>
             <nav className={this.state.navbar ? "active" : ""}>
                 <Link className="Logo" to="/Home">부산중부노회 주일학교연합회</Link>
-                <Link className="About" to="/About">소개</Link>
-                <Link className="Register" to="/Register">접수</Link>
+                <Link className="About" to="/About">대회 안내</Link>
+                <Link className="Register" to="/Register">제출</Link>
                 <Link className="Result" to="/Result">결과</Link>
             </nav>
             <div className={this.state.navbar ? "navline active" : "navline"}>

@@ -194,7 +194,7 @@ app.post("/add/participants", multer.single("image"), async (req, res) =>
             }
         }
 
-        const fileName = `${req.body.name}-${req.body.church}-${Math.floor(Math.random() * 10000000)}${req.file.detectedFileExtension}`;
+        const fileName = `${req.body.name}-${Math.floor(Math.random() * 10000000)}${req.file.detectedFileExtension}`;
 
         if (!FileSystem.existsSync(folderName))
         {

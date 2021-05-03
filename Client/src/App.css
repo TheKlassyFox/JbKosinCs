@@ -242,9 +242,9 @@ footer > p
 {
     font-family: 'GongGothicMedium';
     position: absolute;
-    top: 40%;
-    left: 32.5%;
-    text-align: left;
+    top: 30%;
+    left: 15%;
+    text-align: center;
     font-size: 2.5rem;
     text-shadow: 1px 1px yellow;
     color: rgb(19, 19, 132);
@@ -350,8 +350,8 @@ section .contents
 
     .home h1
     {
-        top: 20%;
-        font-size: 4.5rem;
+        top: 30%;
+        font-size: 4rem;
     }
     section
     {
