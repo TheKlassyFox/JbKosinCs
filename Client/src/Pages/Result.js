@@ -28,9 +28,10 @@ class Result extends React.Component
                 <div className="filter"></div>
                 <h1>대회 결과</h1>
                 <div className="contents">
-                {
-                    this.state.p ? <ParticipantViewer participants={this.state.p} /> : <h2>결과가 없습니다.</h2>
-                }
+                    <div>
+                        <h2>글짓기 - 1학년</h2>
+                        <img src="/Results/imaged.jpg" onError={(e) => {e.target.onError = null;}}></img>
+                    </div>
                 </div>
             </section>
         );

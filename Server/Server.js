@@ -22,6 +22,7 @@ const DATABASE_PASSWORD = "qazxsw18926A!@";
 const app = Express();
 app.use(BodyParser.json());
 app.use(Cors());
+app.use("/Results", Express.static(__dirname + "/Results"));
 
 const connection = MySql.createConnection({ host: DATABASE_HOST, port: DATABASE_PORT, database: DATABASE_NAME, user: DATABASE_USER, password: DATABASE_PASSWORD, dateStrings: true });
 connection.connect();
@@ -143,9 +144,55 @@ app.post("/add/participants", multer.single("image"), async (req, res) =>
     }
     else
     {
-        connection.query(`SELECT Name FROM Events WHERE eventId = ${req.body.eventId}`, (err, rows) => console.log(rows));
+        var folderName = "./Images/Unknown";
 
-        const folderName = `./Images/${req.body.eventId ? req.body.eventId.toString() : "unknown"}`;
+        if (req.body.eventId)
+        {
+            switch (req.body.eventId.toString())
+            {
+                case "1":
+                    folderName = "./Images/글짓기1학년";
+                    break;
+                case "2":
+                    folderName = "./Images/글짓기2학년";
+                    break;
+                case "3":
+                    folderName = "./Images/글짓기3학년";
+                    break;
+                case "4":
+                    folderName = "./Images/글짓기4학년";
+                    break;
+                case "5":
+                    folderName = "./Images/글짓기5학년";
+                    break;
+                case "6":
+                    folderName = "./Images/글짓기6학년";
+                    break;
+                case "7":
+                    folderName = "./Images/그리기유치부";
+                    break;
+                case "8":
+                    folderName = "./Images/그리기1학년";
+                    break;
+                case "9":
+                    folderName = "./Images/그리기2학년";
+                    break;
+                case "10":
+                    folderName = "./Images/그리기3학년";
+                    break;
+                case "11":
+                    folderName = "./Images/그리기4학년";
+                    break;
+                case "12":
+                    folderName = "./Images/그리기5학년";
+                    break;
+                case "13":
+                    folderName = "./Images/그리기6학년";
+                    break;
+                default:
+                    break;
+            }
+        }
 
         const fileName = `${req.body.name}-${req.body.church}-${Math.floor(Math.random() * 10000000)}${req.file.detectedFileExtension}`;
 
