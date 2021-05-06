@@ -51,12 +51,14 @@ class TextForm extends React.Component
             f.append("church", this.state.church);
 
             await Axios.post("/add/participants", f).then(res => 
-            {
-                alert(`이름: ${this.state.name}\n교회: ${this.state.church}\n제출되었습니다.`);
-                this.setState({ eventId: "선택", name: "", church: "", submissionImage: "", image: "" });
-                this.setState({onSubmitting: false});
-            }
-            ).catch(err => {alert(`접수 제출 에러: ${err.response ? err.response.data.message : err.message}`); this.setState({onSubmitting: false});}); 
+                {
+                    alert(`이름: ${this.state.name}\n교회: ${this.state.church}\n제출되었습니다.`);
+                    this.setState({ eventId: "선택", name: "", church: "", submissionImage: "", image: "" });
+                    this.setState({onSubmitting: false});
+                }
+                ).catch(err => {alert(`접수 제출 에러: ${err.response ? err.response.data.message : err.message}`); this.setState({onSubmitting: false});}); 
+
+
         }
 
         this.setState({onSubmitting: false});
