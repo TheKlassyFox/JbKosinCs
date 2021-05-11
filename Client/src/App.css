@@ -20,6 +20,33 @@
     word-break: keep-all;
 }
 
+.dored
+{
+    color: red;
+    position: relative;
+    animation: infinite run 0.2s alternate ease-out, infinite light 0.5s alternate ease-in-out;
+    margin: 0;
+    text-align: center;
+}
+
+@keyframes light {
+    from {
+        color: red;
+    }
+    to {
+        color: yellow;
+    }
+}
+
+@keyframes run
+{
+    from {
+        bottom: -2px;
+    }
+    to {
+        bottom: 2px;
+    }
+}
 
 .registerForm
 {
@@ -82,6 +109,18 @@
     pointer-events: none;
 }
 
+.weak-filter
+{
+    width: 100%;
+    height: 100%;
+    left: 0;
+    top: 0;
+    position: fixed;
+    z-index: -10;
+    opacity: 0.6;
+    background: linear-gradient(rgba(5, 10, 13, 255) 0%, rgba(5, 10, 13, 0) 15%, transparent 100%);
+}
+
 .filter
 {
     width: 100%;
@@ -91,7 +130,7 @@
     position: fixed;
     z-index: -10;
     background-color: rgba(5, 10, 13, 255);
-    opacity: 0.8;
+    opacity: 0.9;
 }
 
 .bg 
@@ -115,7 +154,7 @@ nav
 
     z-index: 1000;
     top: 0;
-    transition: background-color 0.1s ease-in;
+    transition: background-color 0.2s ease-in;
     position: fixed;
     width: 100%;
     display: grid;
@@ -139,22 +178,29 @@ nav.active
     width: 100%;
     height: 1px;
     background-color: transparent;
-    transition: background-color 0.1s ease-in;
+    transition: background-color 0.2s ease-in;
 }
 
 .navline.active
 {
-    background-color: white;
+    background-color: rgba(255, 255, 255, 255);
 }
 
 nav > .Logo
 {
+    transition: ease-in color 0.2s;
     font-family: "NEXON Lv1 Gothic OTF";
     grid-column-start: 2;
     grid-column-end: 6;
     grid-row-start: 1;
     grid-row-end: 2;
     color: white;
+    line-height: 1.3em;
+}
+
+nav.active > .Logo
+{
+    color: #9cd4ed;
 }
 
 nav > .About
@@ -183,9 +229,15 @@ nav > .Result
 
 nav > a
 {
+    transition: color 0.2s ease-in;
     color: white;
     text-decoration: none;
     text-align: center;
+}
+
+nav.active > a
+{
+    color: white;
 }
 
 footer
@@ -201,7 +253,7 @@ footer
 
 footer > a
 {
-    color: #98e0ff;
+    color: #9cd4ed;
     text-decoration: none;
     text-align: center;
     font-family: "NEXON Lv1 Gothic OTF";
@@ -235,19 +287,19 @@ footer > p
 
 .home
 {
-    height: 100vh;
+    grid-template-rows: 25vh 25vh 25vh 5vh 10vh;
 }
 
 .home h1
 {
     font-family: 'GongGothicMedium';
-    position: absolute;
-    top: 30%;
-    left: 15%;
-    text-align: center;
-    font-size: 2.5rem;
-    text-shadow: 1px 1px yellow;
-    color: rgb(19, 19, 132);
+    grid-column-start: 2;
+    grid-column-end: 14;
+    grid-row-start: 2;
+    grid-row-end: 3;
+    font-size: 3rem;
+    color: #00374C;
+    text-shadow: 2px 1px #fcfcd4;
 }
 
 .eventResult img
@@ -266,12 +318,13 @@ section
 {
     display: grid;
     color: white;
-    margin-top: 6rem;
+    margin-top: 10vh;
     grid-template-columns: 15px repeat(12, 1fr) 15px;
     grid-template-rows: 6rem 2rem 1fr 6rem;
     text-align: center;
     align-items: center;
     min-height: 90vh;
+    justify-items: center;
 }
 
 body
@@ -289,26 +342,23 @@ section > h1
     grid-row-end: 2;
     font-size: 2rem;
     line-height: 1.5em;
+    color: #9cd4ed;
 }
 
 .home .button
 {
-    background-color: #C21E56;
-    position: absolute;
-    bottom: 5%;
-    right: 26.5%;
-    padding-top: 10px;
-    padding-bottom: 15px;
-    padding-right: 30px;
-    padding-left: 30px;
+    grid-row-start: 4;
+    grid-row-end: 5;
+    grid-column-start: 2;
+    grid-column-end: 14;
+    background: linear-gradient(30deg, #D87C9E, #927FB4);
     border-radius: 10px;
-    transition: background-color ease-out 0.2s;
-    border: 0.5px white solid;
+    border: 2px white solid;
 }
 
 .home .button:hover
 {
-    background-color: #FFFFF5;
+    background: linear-gradient(210deg, #D87C9E, #927FB4);
 }
 
 .blur
@@ -322,12 +372,14 @@ section > h1
     font-weight: 900;
     text-decoration: none;
     color: #FFFFFF;
-    transition: color ease-out 0.2s;
+    transition: color ease-in 0.2s;
+    display: block;
+    padding: 10px 30px 13px 30px;
 }
 
 .home .button:hover a
 {
-    color: black;
+    color: rgb(255, 226, 61);
 }
 
 section .contents
@@ -337,6 +389,7 @@ section .contents
     grid-row-start: 3;
     grid-row-end: 4;
     text-align: left;
+    max-width: 1200px;
 }
 
 
@@ -354,20 +407,12 @@ section .contents
         font-size: 1.25rem;
     }
 
-    .home .button
-    {
-        right: 15%;
-        bottom: 15%;
-    }
-
     .home h1
     {
-        top: 30%;
-        font-size: 4rem;
+        font-size: 4.5rem;
     }
     section
     {
-        margin-top: 8rem;
         grid-template-columns: 40px repeat(12, 1fr) 40px;
     }
 

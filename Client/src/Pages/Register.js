@@ -9,8 +9,8 @@ class Register extends React.Component
         return (
 
             <section>
-                <h1>대회 접수</h1>
                 <div className="filter"></div>
+                <h1>대회 접수</h1>
                 <div className="contents">
                     <TextForm />
                 </div>

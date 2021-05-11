@@ -9,6 +9,7 @@ class About extends React.Component
 
             <section>
                 <div className="filter"></div>
+                <h1>대회 안내</h1>
                 <div className="contents">
                     <p style={{lineHeight: "2rem"}}>
                         <br />

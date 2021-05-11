@@ -6,12 +6,49 @@ class TextForm extends React.Component
     constructor(props)
     {
         super(props);
-        this.state = {eventsAvailable: [{eventId: "선택", name: "선택"}], eventId: "선택", name: "", church: "", submissionImage: "", image: "", onSubmitting: false };
+        this.state = {eventsAvailable: [{eventId: "선택", name: "선택"}], eventId: "선택", name: "", what: "", church: "", submissionImage: "", image: "", onSubmitting: false, time: "." };
         this.handleSubmit = this.handleSubmit.bind(this);
+        // this.eventEnd = new Date("2021-05-15T12:30:00");
+        this.eventEnd = new Date("2021-05-11T22:00:00");
     }
 
     async componentDidMount()
     {
+        setInterval(() =>
+        {
+            var diff = this.eventEnd - new Date();
+
+            if (diff > 0)
+            {
+                var days = Math.floor(diff / (1000 * 60 * 60 * 24));
+                diff -=  days * (1000 * 60 * 60 * 24);
+    
+                var hours = Math.floor(diff / (1000 * 60 * 60));
+                diff -= hours * (1000 * 60 * 60);
+    
+                var mins = Math.floor(diff / (1000 * 60));
+                diff -= mins * (1000 * 60);
+    
+                var seconds = Math.floor(diff / (1000));
+                diff -= seconds * (1000);
+
+                if (days === 0 && hours === 0 && mins < 30)
+                {
+                    this.setState({what: "dored"});
+                    if (mins === 0 && seconds === 0)
+                    {
+                        this.setState({what: ""});
+                    }
+                }
+    
+                this.setState({time: `접수 마감까지 ${days}일 ${hours}시간 ${mins}분 ${seconds}초`});
+            }
+            else
+            {
+                this.setState({time: "접수 종료"});
+            }
+        }, 1000);
+
         const data = await fetch("/get/events/available");
 
         if (data !== undefined)
@@ -52,9 +89,9 @@ class TextForm extends React.Component
 
             await Axios.post("/add/participants", f).then(res => 
                 {
+                    this.setState({onSubmitting: false});
                     alert(`이름: ${this.state.name}\n교회: ${this.state.church}\n제출되었습니다.`);
                     this.setState({ eventId: "선택", name: "", church: "", submissionImage: "", image: "" });
-                    this.setState({onSubmitting: false});
                 }
                 ).catch(err => {alert(`접수 제출 에러: ${err.response ? err.response.data.message : err.message}`); this.setState({onSubmitting: false});}); 
 
@@ -69,6 +106,8 @@ class TextForm extends React.Component
         return (
 
             <form onSubmit={this.state.onSubmitting ? null : this.handleSubmit} className="registerForm">
+                <p style={{textAlign: "center", fontSize: '0.9em'}} className={this.state.what}>{this.state.time}</p>
+                <br />
                 <label>
                     <span>종목:</span>
                     <select value={this.state.eventId} onChange={(e) => this.setState({eventId: e.target.value})}>
@@ -87,7 +126,9 @@ class TextForm extends React.Component
                     <span>제출:</span>
                     <input type="file" accept="image/*" onChange={(e) => this.setState({image: e.target.files[0]})} />
                 </label>
+                
                 <input className={this.state.onSubmitting ? "submit deactive" : "submit"} type="submit" value={this.state.onSubmitting ? "접수 중..." : "확인"} />
+                <p style={{textAlign: "center", color: "pink", marginTop: "10px", fontSize: '0.75em'}}>파일 사이즈에 따라 오래 걸릴 수 있습니다.</p>
             </form>
         );
     }

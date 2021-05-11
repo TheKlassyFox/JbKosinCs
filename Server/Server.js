@@ -29,6 +29,26 @@ connection.connect();
 
 const multer = Multer();
 
+const connectDummy = () =>
+{
+    console.log(`${Common.GetCurrentTime()} Pinging DB`);
+    connection.query(`SELECT 1`, (error, rows) =>
+    {
+        if (error)
+        {
+            console.error(error);
+        }
+    });
+}
+
+const sendPingDB = () =>
+{
+    connectDummy();
+    setInterval(connectDummy, 600000);
+}
+
+sendPingDB();
+
 function Error(err, res)
 {
     console.error(`${Common.GetCurrentTime()} ERROR: ${err.message}\n`);
@@ -203,6 +223,8 @@ app.post("/add/participants", multer.single("image"), async (req, res) =>
 
         await Pipeline(req.file.stream, FileSystem.createWriteStream(`${folderName}/${fileName}`)).catch(err => { Error({message: "파일을 업로드 할 수 없었습니다. " + err.message}, res); return; });
         req.body["submissionImage"] = fileName;
+        console.log("filename: " + fileName);
+        FileSystem.closeSync;
         Participant.AddParticipant(connection, req.body, res, Create);
     }  
 });
