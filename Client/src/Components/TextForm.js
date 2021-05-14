@@ -68,11 +68,11 @@ class TextForm extends React.Component
         }
         else if (this.state.name === "" || this.state.name.length < 2 || this.state.name.length > 30)
         {
-            alert("이름을 입력해주세요. 길이 2-30");
+            alert("이름을 입력해주세요. (길이 2-30)");
         }
         else if (this.state.church === "" || this.state.church.length < 2 || this.state.name.length > 30)
         {
-            alert("교회를 입력해주세요. 길이 2-30");
+            alert("교회를 입력해주세요. (길이 2-30)");
         }
         else if (this.state.image === undefined || this.state.image === "")
         {
@@ -89,7 +89,7 @@ class TextForm extends React.Component
             await Axios.post("/add/participants", f).then(res => 
                 {
                     this.setState({onSubmitting: false});
-                    alert(`이름: ${this.state.name}\n교회: ${this.state.church}\n제출되었습니다.`);
+                    alert(`이름: ${this.state.name}\n교회: ${this.state.church}\n제출되었습니다.\n대회 결과는 오후 3시까지 게시됩니다.`);
                     this.setState({ eventId: "선택", name: "", church: "", submissionImage: "", image: "" });
                 }
                 ).catch(err => {alert(`접수 제출 에러: ${err.response ? err.response.data.message : err.message}`); this.setState({onSubmitting: false});}); 
@@ -127,7 +127,7 @@ class TextForm extends React.Component
                 </label>
                 
                 <input className={this.state.onSubmitting ? "submit deactive" : "submit"} type="submit" value={this.state.onSubmitting ? "접수 중..." : "확인"} />
-                <p style={{textAlign: "center", color: "pink", marginTop: "10px", fontSize: '0.75em'}}>파일 사이즈에 따라 오래 걸릴 수 있습니다.</p>
+                <p style={{textAlign: "center", color: "pink", marginTop: "10px", fontSize: '0.75em'}}>파일 사이즈에 따라 오래 걸릴 수 있습니다.<br />접수 중에 창을 닫지마세요.</p>
             </form>
         );
     }
