@@ -13,10 +13,9 @@
     font-style: normal;
 }
 
-a:link, a:visited, a:active
+a:link, a:visited, a:hover, a:active
 {
     color: white;
-    appearance: none;
 }
 
 *
@@ -97,10 +96,11 @@ a:link, a:visited, a:active
     font-size: 1rem;
     padding: 10px 120px 10px 120px;
     margin-top: 50px;
-    background-color: #FFFFF5;
+    background-color: white;
     transition: background-color ease-out 0.5s, color ease-in-out 0.5s;
     border: 0.5px white solid;
     justify-self: center;
+    appearance: none;
 }
 
 .registerForm .submit:hover
@@ -113,12 +113,6 @@ a:link, a:visited, a:active
     background-color: #C21E56;
     color: white;
     pointer-events: none;
-}
-
-.warning
-{
-    color: #e4326d;
-    padding-left: 1rem;
 }
 
 .weak-filter
@@ -158,6 +152,12 @@ a:link, a:visited, a:active
     object-fit: cover;
     z-index: -1000;
     transition: opacity ease 5s;
+}
+
+.warning
+{
+    color: #e4326d;
+    padding-left: 1rem;
 }
 
 nav
@@ -263,7 +263,7 @@ footer
     text-align: center;
 }
 
-footer > a
+footer > a:link, footer > a:visited, footer > a:hover, footer > a:active
 {
     color: #9cd4ed;
     text-decoration: none;
@@ -473,7 +473,7 @@ section .contents
         grid-row-end: 2; 
     }
 
-    footer > a
+    footer > a:link, footer > a:visited, footer > a:hover, footer > a:active
     {
         font-size: 1rem;
     }

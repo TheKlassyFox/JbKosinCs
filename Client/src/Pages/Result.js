@@ -12,12 +12,12 @@ class Result extends React.Component
 
     async componentDidMount()
     {
-        const p = await fetch("/get/participants");
-
+        // const p = await fetch("/get/participants");
+        /*
         if (p !== undefined)
         {
             this.setState({p: await p.json()});
-        }
+        }*/
     }
 
     render()
