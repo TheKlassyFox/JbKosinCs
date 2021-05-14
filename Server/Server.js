@@ -164,66 +164,76 @@ app.post("/add/participants", multer.single("image"), async (req, res) =>
     }
     else
     {
-        var folderName = "./Images/Unknown";
+        var folderName = "Unknown";
 
         if (req.body.eventId)
         {
             switch (req.body.eventId.toString())
             {
                 case "1":
-                    folderName = "./Images/글짓기1학년";
+                    folderName = "글짓기1학년";
                     break;
                 case "2":
-                    folderName = "./Images/글짓기2학년";
+                    folderName = "글짓기2학년";
                     break;
                 case "3":
-                    folderName = "./Images/글짓기3학년";
+                    folderName = "글짓기3학년";
                     break;
                 case "4":
-                    folderName = "./Images/글짓기4학년";
+                    folderName = "글짓기4학년";
                     break;
                 case "5":
-                    folderName = "./Images/글짓기5학년";
+                    folderName = "글짓기5학년";
                     break;
                 case "6":
-                    folderName = "./Images/글짓기6학년";
+                    folderName = "글짓기6학년";
                     break;
                 case "7":
-                    folderName = "./Images/그리기유치부";
+                    folderName = "그리기유치부";
                     break;
                 case "8":
-                    folderName = "./Images/그리기1학년";
+                    folderName = "그리기1학년";
                     break;
                 case "9":
-                    folderName = "./Images/그리기2학년";
+                    folderName = "그리기2학년";
                     break;
                 case "10":
-                    folderName = "./Images/그리기3학년";
+                    folderName = "그리기3학년";
                     break;
                 case "11":
-                    folderName = "./Images/그리기4학년";
+                    folderName = "그리기4학년";
                     break;
                 case "12":
-                    folderName = "./Images/그리기5학년";
+                    folderName = "그리기5학년";
                     break;
                 case "13":
-                    folderName = "./Images/그리기6학년";
+                    folderName = "그리기6학년";
                     break;
                 default:
                     break;
             }
         }
 
+        const realFolderName = `./Images/${folderName}`;
+        const backupFolderName = `./BackupImages/${folderName}`;
+
         const fileName = `${req.body.name}-${Math.floor(Math.random() * 10000000)}${req.file.detectedFileExtension}`;
 
-        if (!FileSystem.existsSync(folderName))
+        if (!FileSystem.existsSync(realFolderName))
         {
-            FileSystem.mkdirSync(folderName, {recursive: true});
+            FileSystem.mkdirSync(realFolderName, {recursive: true});
         }
 
-        await Pipeline(req.file.stream, FileSystem.createWriteStream(`${folderName}/${fileName}`)).catch(err => { Error({message: "파일을 업로드 할 수 없었습니다. " + err.message}, res); return; });
+        if (!FileSystem.existsSync(backupFolderName))
+        {
+            FileSystem.mkdirSync(backupFolderName, {recursive: true});
+        }
+
+        await Pipeline(req.file.stream, FileSystem.createWriteStream(`${realFolderName}/${fileName}`)).catch(err => { Error({message: "파일을 업로드 할 수 없었습니다. (E0)" + err.message}, res); return; });
+        await Pipeline(req.file.stream, FileSystem.createWriteStream(`${backupFolderName}/${fileName}`)).catch(err => { Error({message: "파일을 업로드 할 수 없었습니다. (E1)" + err.message}, res); return; });
+
         req.body["submissionImage"] = fileName;
-        console.log("filename: " + fileName);
+        console.log("file created: " + `${realFolderName}/${fileName}`);
         FileSystem.closeSync;
         Participant.AddParticipant(connection, req.body, res, Create);
     }  

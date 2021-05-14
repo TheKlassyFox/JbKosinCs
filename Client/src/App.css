@@ -13,6 +13,12 @@
     font-style: normal;
 }
 
+a:link, a:visited, a:active
+{
+    color: white;
+    appearance: none;
+}
+
 *
 {
     font-family: 'Noto Sans KR', sans-serif;
@@ -107,6 +113,12 @@
     background-color: #C21E56;
     color: white;
     pointer-events: none;
+}
+
+.warning
+{
+    color: #e4326d;
+    padding-left: 1rem;
 }
 
 .weak-filter

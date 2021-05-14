@@ -8,8 +8,7 @@ class TextForm extends React.Component
         super(props);
         this.state = {eventsAvailable: [{eventId: "선택", name: "선택"}], eventId: "선택", name: "", what: "", church: "", submissionImage: "", image: "", onSubmitting: false, time: "." };
         this.handleSubmit = this.handleSubmit.bind(this);
-        // this.eventEnd = new Date("2021-05-15T12:30:00");
-        this.eventEnd = new Date("2021-05-11T22:00:00");
+        this.eventEnd = new Date("2021-05-15T12:30:00");
     }
 
     async componentDidMount()
@@ -45,7 +44,7 @@ class TextForm extends React.Component
             }
             else
             {
-                this.setState({time: "접수 종료"});
+                this.setState({time: "접수 종료 (늦은 제출 가능)"});
             }
         }, 1000);
 

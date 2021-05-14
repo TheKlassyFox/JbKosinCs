@@ -14,9 +14,9 @@ class Footer extends React.Component
                 <footer>
                     <Link to="/Home">부산중부노회 주일학교연합회</Link>
                     <p>
-                        <a href="http://jb.kosincs.org/" style={{color: "white"}} target="_blank">기존 웹사이트</a>
+                        <a href="http://jb.kosincs.org/" style={{color: "white"}} target="_blank" rel="noreferrer">기존 웹사이트</a>
                         <span>     |     </span>
-                        <a target="_blank" href="http://kosincs.org/" style={{color: "white"}}>전국 주일학교 연합회</a>
+                        <a target="_blank" href="http://kosincs.org/" style={{color: "white"}} rel="noreferrer">전국 주일학교 연합회</a>
                         <br /><br />
                         <span>ⓒ 2021 부산중부노회주일학교연합회. All rights reserved.</span>
                         <br />
