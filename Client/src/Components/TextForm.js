@@ -9,7 +9,7 @@ class TextForm extends React.Component
         this.state = {eventsAvailable: [{eventId: "선택", name: "선택"}], eventId: "선택", name: "", what: "", church: "", submissionImage: "", image: "", onSubmitting: false, time: "." };
         this.handleSubmit = this.handleSubmit.bind(this);
         // this.eventEnd = new Date("2021-05-15T12:30:00");
-        this.eventEnd = new Date("2021-05-11T22:00:00");
+        this.eventEnd = new Date("2021-05-11T22:30:00");
     }
 
     async componentDidMount()
