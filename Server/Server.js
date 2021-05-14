@@ -12,7 +12,6 @@ const Participant = require("./Controllers/Participant");
 const { pipeline } = require("stream");
 
 const SERVER_PORT = 5000;
-const FILE_STORAGE_PATH = `${__dirname}/../Database/Images`;
 const DATABASE_HOST = "localhost";
 const DATABASE_PORT = 3306;
 const DATABASE_NAME = "JbKosinCs";
@@ -230,13 +229,20 @@ app.post("/add/participants", multer.single("image"), async (req, res) =>
         }
 
         await Pipeline(req.file.stream, FileSystem.createWriteStream(`${realFolderName}/${fileName}`)).catch(err => { Error({message: "파일을 업로드 할 수 없었습니다. (E0)" + err.message}, res); return; });
-        await Pipeline(req.file.stream, FileSystem.createWriteStream(`${backupFolderName}/${fileName}`)).catch(err => { Error({message: "파일을 업로드 할 수 없었습니다. (E1)" + err.message}, res); return; });
+        FileSystem.copyFile(`${realFolderName}/${fileName}`, `${backupFolderName}/${fileName}`, (err) =>
+        {
+            if (err)
+            {
+                console.error("Error while doing backup image:\n" + err.message);
+                throw err;       
+            }
+        });
 
         req.body["submissionImage"] = fileName;
         console.log("file created: " + `${realFolderName}/${fileName}`);
         FileSystem.closeSync;
         Participant.AddParticipant(connection, req.body, res, Create);
-    }  
+    }
 });
 
 app.put("/score/participants/participantId/:participantId", (req, res) => Participant.ScoreParticipant(connection, req.params, req.body, res, Update));
